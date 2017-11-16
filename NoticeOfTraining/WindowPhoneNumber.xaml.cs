@@ -10,16 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace NoticeOfTraining {
 	/// <summary>
-	/// Логика взаимодействия для MainWindow.xaml
+	/// Логика взаимодействия для WindowPhoneNumber.xaml
 	/// </summary>
-	public partial class MainWindow : Window {
-		public MainWindow() {
+	public partial class WindowPhoneNumber : Window {
+		public WindowPhoneNumber() {
 			InitializeComponent();
+		}
+
+		private void buttonSave_Click(object sender, RoutedEventArgs e) {
+			Close();
 		}
 	}
 }
