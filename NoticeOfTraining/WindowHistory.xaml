@@ -1,0 +1,90 @@
+﻿<Window x:Class="NoticeOfTraining.WindowHistory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NoticeOfTraining"
+        mc:Ignorable="d"
+        Title="История отправок" Height="400" Width="1000" WindowStartupLocation="CenterOwner" Background="#FFF0F0F0">
+    <Window.Resources>
+        <DataTemplate x:Key="ArrowUp">
+            <DockPanel>
+                <TextBlock HorizontalAlignment="Center"
+                           Text="{Binding}" />
+                <Path VerticalAlignment="Center"
+                      Fill="Black"
+                      Data="M 5,5 15,5 10,0 5,5" />
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ArrowDown">
+            <DockPanel>
+                <TextBlock HorizontalAlignment="Center"
+                           Text="{Binding}" />
+                <Path VerticalAlignment="Center"
+                      Fill="Black"
+                      Data="M 5,0 10,5 15,0 5,0" />
+            </DockPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0" Margin="10,10,10,5"
+                  ItemsSource="{Binding HistoryItems}"
+                  GridViewColumnHeader.Click="ListViewColumnHeader_Click"
+                  SelectionChanged="ListView_SelectionChanged"
+                  x:Name="listViewHistory"
+                  SelectionMode="Single">
+            <ListView.Resources>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
+                </Style>
+            </ListView.Resources>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Дата отправки" 
+                                    DisplayMemberBinding="{Binding DateTimeCreateString}"/>
+                    <GridViewColumn Header="Получатели" 
+                                    DisplayMemberBinding="{Binding PhoneNumbers.Count}"/>
+                    <GridViewColumn Header="Текст сообщения" 
+                                    DisplayMemberBinding="{Binding MessageText}"/>
+                    <GridViewColumn Header="Сразу" 
+                                    DisplayMemberBinding="{Binding SendNowString}"/>
+                    <GridViewColumn Header="В заданное время" 
+                                    DisplayMemberBinding="{Binding SendLaterString}"/>
+                    <GridViewColumn Header="Заданное время" 
+                                    DisplayMemberBinding="{Binding DateTimeSelectedString}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" 
+                    x:Name="buttonClearHistory" 
+                    Content="Очистить историю" 
+                    Width="150" 
+                    Margin="10,5,10,10" 
+                    Click="buttonClearHistory_Click" 
+                    IsEnabled="False"/>
+            <Button Grid.Column="1" 
+                    x:Name="buttonDetails" 
+                    Content="Посмотреть подробности" 
+                    Width="150" 
+                    Margin="10,5,10,10" 
+                    Click="buttonDetails_Click" 
+                    IsEnabled="False"/>
+            <Button Grid.Column="2" 
+                    x:Name="buttonClose" 
+                    Content="Закрыть" 
+                    Width="150" 
+                    Margin="10,5,10,10" 
+                    Click="buttonClose_Click"/>
+        </Grid>
+    </Grid>
+</Window>

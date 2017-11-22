@@ -5,13 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NoticeOfTraining"
         mc:Ignorable="d"
-        Title="Редактирование шаблона" SizeToContent="Height" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Width="300" Background="#FFF0F0F0">
+        Title="Редактирование шаблона" 
+        SizeToContent="Height" 
+        WindowStartupLocation="CenterOwner" 
+        ResizeMode="NoResize" 
+        Width="300" 
+        Background="#FFF0F0F0">
     <StackPanel>
-        <Label Content="Название:" HorizontalAlignment="Center" Margin="10,10,10,0"/>
-        <TextBox Height="23" TextWrapping="Wrap" Text="TextBox" Margin="10,0,10,10"/>
-        <Label Content="Текст сообщения:" Margin="10,10,10,0" HorizontalAlignment="Center"/>
-        <TextBox Height="120" TextWrapping="Wrap" Text="TextBox" Margin="10,0,10,10"/>
-        <Button x:Name="buttonSave" Content="Сохранить" Click="buttonSave_Click" Margin="10"/>
-
+        <Label Content="Название:" 
+               HorizontalAlignment="Center" 
+               Margin="10,10,10,0"/>
+        <TextBox Height="23" 
+                 x:Name="textBoxName"
+                 Text="{Binding TemplateItem.Name}" 
+                 Margin="10,0,10,10"/>
+        <Label Content="Текст сообщения:" 
+               Margin="10,10,10,0" 
+               HorizontalAlignment="Center"/>
+        <TextBox Height="120" 
+                 x:Name="textBoxMessage"
+                 TextWrapping="Wrap" 
+                 Text="{Binding TemplateItem.Message}" 
+                 Margin="10,0,10,10" SpellCheck.IsEnabled="True"/>
+        <Button x:Name="buttonSave" 
+                Content="Сохранить" 
+                Click="buttonSave_Click" 
+                Margin="10" 
+                IsEnabled="False"/>
     </StackPanel>
 </Window>

@@ -4,13 +4,38 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NoticeOfTraining"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:osb="clr-namespace:Xceed.Wpf.Toolkit.Obselete;assembly=WPFToolkit.Extended"
         mc:Ignorable="d"
-        Title="Редактирование контакта" Background="#FFF0F0F0" SizeToContent="Height" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Width="300">
+        Title="Редактирование контакта" 
+        Background="#FFF0F0F0" 
+        SizeToContent="Height" 
+        WindowStartupLocation="CenterOwner" 
+        ResizeMode="NoResize" 
+        Width="300">
     <StackPanel>
-        <Label Content="Имя сотрудника:" HorizontalAlignment="Center" Margin="10,10,10,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBoxName" Height="23" Margin="10,0,10,5" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
-        <Label Content="Номер телефона:" HorizontalAlignment="Center" Margin="10,10,10,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBoxPhoneNumber" HorizontalAlignment="Center" Height="23" Margin="10,0,10,10" TextWrapping="Wrap" Text="+7 (___) ___-__-__" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="100"/>
-        <Button x:Name="buttonSave" Content="Сохранить" Margin="10" Click="buttonSave_Click"/>
+        <Label Content="Имя сотрудника:" 
+               HorizontalAlignment="Center" 
+               Margin="10,10,10,0"/>
+        <TextBox x:Name="textBoxName" 
+                 Text="{Binding PhoneNumberItem.Name}" 
+                 Height="23" Margin="10,0,10,5" 
+                 KeyDown="TextBox_KeyDown"/>
+        <Label Content="Номер телефона:" 
+               HorizontalAlignment="Center" 
+               Margin="10,10,10,0" />
+        <xctk:MaskedTextBox Text="{Binding PhoneNumberItem.PhoneNumber}" 
+                            Mask="+7 (000) 000-00-00" 
+                            x:Name="textBoxPhoneNumber" 
+                            HorizontalAlignment="Center" 
+                            Margin="10,0,10,10" 
+                            HorizontalContentAlignment="Center" 
+                            Width="120" 
+                            KeyDown="TextBox_KeyDown"/>
+        <Button x:Name="buttonSave" 
+                Content="Сохранить" 
+                Margin="10" 
+                Click="ButtonSave_Click" 
+                IsEnabled="False"/>
     </StackPanel>
 </Window>

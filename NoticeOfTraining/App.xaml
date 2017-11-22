@@ -17,5 +17,6 @@
         <BitmapImage x:Key="Right" UriSource="pack://application:,,,/Resources/ExpandChevronRight_16x.png"/>
         <BitmapImage x:Key="RightDouble" UriSource="pack://application:,,,/Resources/ExpandChevronRightGroup_16x.png"/>
         <BitmapImage x:Key="Down" UriSource="pack://application:,,,/Resources/ExpandChevronDown_16x.png"/>
+        <BitmapImage x:Key="DatePicker" UriSource="pack://application:,,,/Resources/DatePicker_16x.png"/>
     </Application.Resources>
 </Application>
