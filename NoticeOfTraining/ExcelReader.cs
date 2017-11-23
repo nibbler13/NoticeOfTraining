@@ -65,8 +65,8 @@ namespace NoticeOfTraining {
 					progressCurrent += progressStep;
 					UpdateProgress(progressCurrent, "Разбор строки " + i);
 
-					string name = xlRange.Cells[i, columnNameIndex].Value2;
-					string phoneNumber = xlRange.Cells[i, columnPhoneNumberIndex].Value2;
+					string name = xlRange.Cells[i, columnNameIndex].Value.ToString();
+					string phoneNumber = xlRange.Cells[i, columnPhoneNumberIndex].Value2.ToString();
 
 					if (string.IsNullOrEmpty(phoneNumber))
 						continue;
