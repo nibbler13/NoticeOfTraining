@@ -27,11 +27,11 @@ namespace NoticeOfTraining {
 		}
 
 		private void UpdateState(double percentage, string text) {
-			Console.WriteLine("UpdateState");
+			Console.WriteLine("UpdateState: " + text);
 
 			Application.Current.Dispatcher.Invoke(new Action(() => {
 				progressBar.Value = percentage;
-				textBox.Text += text + Environment.NewLine;
+				textBox.Text = text + Environment.NewLine + textBox.Text;
 			}));
 		}
 
@@ -51,7 +51,7 @@ namespace NoticeOfTraining {
 
 			if (ItemHistory.SendLater) {
 				sendTypes.Add("Отправка в заданное время", ItemHistory.DateTimeSelected);
-				UpdateState(progressCurrent, "Выбранное время: " + ((DateTime)ItemHistory.DateTimeSelected));
+				UpdateState(progressCurrent, "Выбранное время: " + ((DateTime)ItemHistory.DateTimeSelected).ToString("yyyy-MM-dd HH:mm"));
 			}
 
 			foreach (ItemPhoneNumber number in ItemHistory.PhoneNumbers) {
@@ -59,13 +59,16 @@ namespace NoticeOfTraining {
 
 				foreach (KeyValuePair<string, DateTime?> sendType in sendTypes) {
 					UpdateState(progressCurrent, sendType.Key);
-					ItemSendResult sendMessageResult = await SvyaznoyZagruzka.SendMessage(
+					ItemSendResult sendMessageResult = await SmsGate.SendMessage(
 						number.GetClearedNumber(), 
 						ItemHistory.MessageText, 
 						sendType.Value);
+
 					progressCurrent += progressStep;
+
 					UpdateState(progressCurrent, sendMessageResult.IsSuccessStatusCode == true ? 
-						"Успешно" : "Не удалось отправить: " + sendMessageResult.Content);
+						"Успешно, ID: " + sendMessageResult.MessageId : "Не удалось отправить: " + sendMessageResult.Content);
+
 					sendMessageResult.ItemPhoneNumber = number;
 					ItemHistory.Results.Add(sendMessageResult);
 				}

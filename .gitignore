@@ -259,3 +259,9 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+FW Подключение к СМСЦ ИНТЕЛЛИН.msg
+OPERATIONS-5571576-141117-1550-40.pdf
+Re Ticket#1074481 FW FW API.msg
+*.settings
+SmsSend/Properties/Settings.Designer.cs
+SmsSend/IntellinPrivateData.cs

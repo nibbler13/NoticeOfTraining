@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NoticeOfTraining"
         mc:Ignorable="d"
-        Title="Подробности отправки сообщения от " Height="400" Width="1000" Background="#FFF0F0F0" WindowStartupLocation="CenterOwner">
+        Title="Информация об отправке сообщения от " Height="400" Width="1000" Background="#FFF0F0F0" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <DataTemplate x:Key="ArrowUp">
             <DockPanel>

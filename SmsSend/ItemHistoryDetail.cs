@@ -20,7 +20,7 @@ namespace NoticeOfTraining {
 			MessageId = messageId;
 			DateSelected = dateSelected != null ? ((DateTime)dateSelected).ToString() : "Сразу";
 			itemDeliveryState = new ItemDeliveryState();
-			itemDeliveryState = SvyaznoyZagruzka.GetDeliveryStateContent(MessageId);
+			itemDeliveryState = SmsGate.GetDeliveryStateContent(MessageId);
 			DeliveryState = itemDeliveryState.IsSuccessStatusCode ?
 				itemDeliveryState.DeliveryState :
 				"Не удалось получить статус, " + itemDeliveryState.Content;

@@ -99,7 +99,7 @@ namespace NoticeOfTraining {
 			Application.Current.Dispatcher.Invoke(new Action(() => {
 				progressBar.Value = (int)progress;
 				if (!string.IsNullOrEmpty(text))
-					textBox.Text += text + Environment.NewLine;
+					textBox.Text = text + Environment.NewLine + textBox.Text;
 			}));
 		}
 	}

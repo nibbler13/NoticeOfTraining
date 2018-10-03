@@ -14,7 +14,7 @@
         ResizeMode="NoResize" 
         Width="300">
     <StackPanel>
-        <Label Content="Имя сотрудника:" 
+        <Label Content="Имя:" 
                HorizontalAlignment="Center" 
                Margin="10,10,10,0"/>
         <TextBox x:Name="textBoxName" 

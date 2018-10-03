@@ -154,10 +154,7 @@ namespace NoticeOfTraining {
 
 
 		private void DateTimePicker_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-			if (e.NewValue == null)
-				return;
-
-			if (!IsLoaded)
+			if (dateTimePicker == null || e.NewValue == null || !IsLoaded)
 				return;
 
 			if ((DateTime)e.NewValue < DateTime.Now) {

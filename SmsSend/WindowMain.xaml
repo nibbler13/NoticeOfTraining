@@ -5,7 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Уведомление об обучении" Height="400" Width="1000" Background="#FFF0F0F0" WindowStartupLocation="CenterScreen" MinWidth="1000" MinHeight="400">
+        Title="Отправка СМС-сообщений" 
+        Height="400" 
+        Width="1000" 
+        Background="#FFF0F0F0" 
+        WindowStartupLocation="CenterScreen" 
+        MinWidth="1000" 
+        MinHeight="400">
     <Window.Resources>
         <DataTemplate x:Key="ArrowUp">
             <DockPanel>
@@ -26,6 +32,7 @@
             </DockPanel>
         </DataTemplate>
     </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -42,9 +49,22 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="Сохраненные номера телефонов:" Grid.Column="0" Grid.Row="0" Margin="10,10,5,0"/>
-        <Label Content="Получатели рассылки:" Grid.Column="2" Grid.Row="0" Margin="5,10,5,0"/>
-        <Label Content="Шаблоны сообщений:" Grid.Column="3" Grid.Row="0" Margin="5,10,10,0"/>
+        
+        <Label Content="Сохраненные номера телефонов:" 
+               Grid.Column="0" 
+               Grid.Row="0" 
+               Margin="10,10,5,0"/>
+        
+        <Label Content="Получатели рассылки:" 
+               Grid.Column="2" 
+               Grid.Row="0" 
+               Margin="5,10,5,0"/>
+        
+        <Label Content="Шаблоны сообщений:" 
+               Grid.Column="3" 
+               Grid.Row="0" 
+               Margin="5,10,10,0"/>
+        
         <ListView x:Name="listViewPhoneNumbersSaved" 
                   ItemsSource="{Binding PhoneNumberSavedItems}" 
                   Grid.Column="0" 
@@ -56,21 +76,27 @@
                   SelectionChanged="ListViewPhoneNumbersSaved_SelectionChanged">
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="MouseDoubleClick" Handler="ListViewPhoneNumberSavedItem_MouseDoubleClick"/>
+                    <EventSetter Event="MouseDoubleClick"
+                                 Handler="ListViewPhoneNumberSavedItem_MouseDoubleClick"/>
                 </Style>
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Имя сотрудника" 
+                    <GridViewColumn Header="Имя" 
                                     DisplayMemberBinding="{Binding Name}" 
-                                    Width="{Binding ElementName=helperFieldPhoneNumbersSaved,Path=ActualWidth}"/>
+                                    Width="{Binding ElementName=helperFieldPhoneNumbersSaved, Path=ActualWidth}"/>
                     <GridViewColumn Header="Номер телефона" 
                                     DisplayMemberBinding="{Binding PhoneNumber}" 
                                     x:Name="columnPhoneNumberSaved"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Grid Visibility="Hidden" Grid.Row="1" Grid.Column="0" Grid.RowSpan="4" Margin="10,0,5,5">
+        
+        <Grid Visibility="Hidden" 
+              Grid.Row="1" 
+              Grid.Column="0" 
+              Grid.RowSpan="4" 
+              Margin="10,0,5,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ElementName=columnPhoneNumberSaved, Path=ActualWidth}"/>
                 <ColumnDefinition Width="*"/>
@@ -78,32 +104,72 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1" x:Name="helperFieldPhoneNumbersSaved"/>
         </Grid>
-        <StackPanel Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" Margin="10,5,5,5">
-            <TextBlock Text="Фильтр по имени сотрудника:" HorizontalAlignment="Center"/>
-            <TextBox x:Name="textBoxFilter" TextChanged="TextBoxFilter_TextChanged"/>
+        
+        <StackPanel Grid.Column="0" 
+                    Grid.Row="5" 
+                    VerticalAlignment="Center" 
+                    Margin="10,5,5,5">
+            <TextBlock Text="Фильтр по имени:" 
+                       HorizontalAlignment="Center"/>
+            <TextBox x:Name="textBoxFilter" 
+                     TextChanged="TextBoxFilter_TextChanged"/>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Orientation="Vertical" VerticalAlignment="Center">
-            <Button x:Name="buttonReceiversAddSelected" Margin="5" Width="20" Height="20" ToolTip="Переместить выбранное в список получателей" Click="ButtonReceiversAddSelected_Click" IsEnabled="False">
+        
+        <StackPanel Grid.Column="1" 
+                    Grid.Row="1" 
+                    Grid.RowSpan="4" 
+                    Orientation="Vertical" 
+                    VerticalAlignment="Center">
+            
+            <Button x:Name="buttonReceiversAddSelected" 
+                    Margin="5" 
+                    Width="20"
+                    Height="20"
+                    ToolTip="Переместить выбранное в список получателей" 
+                    Click="ButtonReceiversAddSelected_Click" 
+                    IsEnabled="False">
                 <Button.Content>
                     <Image Source="{StaticResource Right}"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="buttonReceiversAddAll" Margin="5" Width="20" Height="20" ToolTip="Переместить все в список получателей" Click="ButtonReceiversAddAll_Click" IsEnabled="False">
+            
+            <Button x:Name="buttonReceiversAddAll" 
+                    Margin="5" 
+                    Width="20" 
+                    Height="20" 
+                    ToolTip="Переместить все в список получателей"
+                    Click="ButtonReceiversAddAll_Click" 
+                    IsEnabled="False">
                 <Button.Content>
                     <Image Source="{StaticResource RightDouble}"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="buttonReceiversRemoveAll" Margin="5" Width="20" Height="20" ToolTip="Убрать все из списка получателей" Click="ButtonReceiversRemoveAll_Click" IsEnabled="False">
+            
+            <Button x:Name="buttonReceiversRemoveAll" 
+                    Margin="5"
+                    Width="20" 
+                    Height="20" 
+                    ToolTip="Убрать все из списка получателей"
+                    Click="ButtonReceiversRemoveAll_Click"
+                    IsEnabled="False">
                 <Button.Content>
                     <Image Source="{StaticResource LeftDouble}"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="buttonReceiversRemoveSelected" Margin="5" Width="20" Height="20" ToolTip="Убрать выбранное из списка получателей" Click="ButtonReceiversRemoveSelected_Click" IsEnabled="False">
+
+            <Button x:Name="buttonReceiversRemoveSelected" 
+                    Margin="5" 
+                    Width="20" 
+                    Height="20" 
+                    ToolTip="Убрать выбранное из списка получателей" 
+                    Click="ButtonReceiversRemoveSelected_Click" 
+                    IsEnabled="False">
                 <Button.Content>
                     <Image Source="{StaticResource Left}"/>
                 </Button.Content>
             </Button>
         </StackPanel>
+        
         <ListView x:Name="listViewPhoneNumbersReceivers" 
                   ItemsSource="{Binding PhoneNumberReceiversItems}" 
                   Grid.Column="2" 
@@ -114,17 +180,27 @@
                   SelectionChanged="ListViewPhoneNumbersReceivers_SelectionChanged">
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="MouseDoubleClick" Handler="ListViewPhoneNumberReceiversItem_MouseDoubleClick"/>
+                    <EventSetter Event="MouseDoubleClick" 
+                                 Handler="ListViewPhoneNumberReceiversItem_MouseDoubleClick"/>
                 </Style>
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Имя сотрудника" DisplayMemberBinding="{Binding Name}" Width="{Binding ElementName=helperFieldPhoneNumbersReceivers,Path=ActualWidth}"/>
-                    <GridViewColumn Header="Номер телефона" DisplayMemberBinding="{Binding PhoneNumber}" x:Name="columnPhoneNumberReceivers"/>
+                    <GridViewColumn Header="Имя" 
+                                    DisplayMemberBinding="{Binding Name}" 
+                                    Width="{Binding ElementName=helperFieldPhoneNumbersReceivers, Path=ActualWidth}"/>
+                    <GridViewColumn Header="Номер телефона" 
+                                    DisplayMemberBinding="{Binding PhoneNumber}" 
+                                    x:Name="columnPhoneNumberReceivers"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Grid Visibility="Hidden" Grid.Row="1" Grid.Column="2" Grid.RowSpan="5" Margin="5,0,5,5">
+        
+        <Grid Visibility="Hidden" 
+              Grid.Row="1" 
+              Grid.Column="2" 
+              Grid.RowSpan="5" 
+              Margin="5,0,5,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ElementName=columnPhoneNumberReceivers, Path=ActualWidth}"/>
                 <ColumnDefinition Width="*"/>
@@ -132,6 +208,7 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1" x:Name="helperFieldPhoneNumbersReceivers"/>
         </Grid>
+        
         <ListView x:Name="listViewTemplates" 
                   ItemsSource="{Binding TemplateItems}" 
                   Grid.Column="3" 
@@ -141,16 +218,23 @@
                   SelectionChanged="ListViewTemplates_SelectionChanged">
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="MouseDoubleClick" Handler="ListViewTemplateItem_MouseDoubleClick"/>
+                    <EventSetter Event="MouseDoubleClick" 
+                                 Handler="ListViewTemplateItem_MouseDoubleClick"/>
                 </Style>
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}" Width="150" x:Name="columnMessage"/>
-                    <GridViewColumn Header="Текст сообщения" DisplayMemberBinding="{Binding Message}" Width="{Binding ElementName=helperFieldTemplates,Path=ActualWidth}"/>
+                    <GridViewColumn Header="Название" 
+                                    DisplayMemberBinding="{Binding Name}" 
+                                    Width="150" 
+                                    x:Name="columnMessage"/>
+                    <GridViewColumn Header="Текст сообщения" 
+                                    DisplayMemberBinding="{Binding Message}" 
+                                    Width="{Binding ElementName=helperFieldTemplates, Path=ActualWidth}"/>
                 </GridView>
             </ListView.View>
         </ListView>
+        
         <Grid Visibility="Hidden" Grid.Row="1" Grid.Column="3" Margin="5,0,10,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ElementName=columnMessage, Path=ActualWidth}"/>
@@ -159,22 +243,49 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1" x:Name="helperFieldTemplates"/>
         </Grid>
-        <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button x:Name="buttonTemplateAdd" Margin="5" Width="20" Height="20" ToolTip="Добавить" Click="ButtonTemplateAdd_Click">
+        
+        <StackPanel Grid.Column="3" 
+                    Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center">
+            
+            <Button x:Name="buttonTemplateAdd" 
+                    Margin="5"
+                    Width="20" 
+                    Height="20" 
+                    ToolTip="Добавить" 
+                    Click="ButtonTemplateAdd_Click">
                 <Button.Content>
                     <Image Source="{StaticResource Add}"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="buttonTemplateEdit" Margin="5" Width="20" Height="20" ToolTip="Изменить" Click="ButtonTemplateEdit_Click" IsEnabled="False">
+            
+            <Button x:Name="buttonTemplateEdit" 
+                    Margin="5" 
+                    Width="20" 
+                    Height="20" 
+                    ToolTip="Изменить" 
+                    Click="ButtonTemplateEdit_Click"
+                    IsEnabled="False">
                 <Button.Content>
                     <Image Source="{StaticResource Edit}"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="buttonTemplateRemove" Margin="5" Width="20" Height="20" ToolTip="Удалить" Click="ButtonTemplateRemove_Click" IsEnabled="False">
+            
+            <Button x:Name="buttonTemplateRemove" 
+                    Margin="5" 
+                    Width="20" 
+                    Height="20" 
+                    ToolTip="Удалить" 
+                    Click="ButtonTemplateRemove_Click" 
+                    IsEnabled="False">
                 <Button.Content>
-                    <Image Source="{StaticResource Remove}" IsEnabled="False" IsHitTestVisible="False"/>
+                    <Image Source="{StaticResource Remove}" 
+                           IsEnabled="False" 
+                           IsHitTestVisible="False"/>
                 </Button.Content>
             </Button>
+            
             <Button x:Name="buttonTemplateUse" 
                     Margin="25,5,5,5" 
                     Width="20" 
@@ -183,11 +294,17 @@
                     Click="ButtonTemplateUse_Click" 
                     IsEnabled="False">
                 <Button.Content>
-                    <Image Source="{StaticResource Down}" IsEnabled="False"/>
+                    <Image Source="{StaticResource Down}" 
+                           IsEnabled="False"/>
                 </Button.Content>
             </Button>
         </StackPanel>
-        <Label Content="Текст сообщения:" Grid.Column="3" Grid.Row="3" Margin="5,5,10,0"/>
+        
+        <Label Content="Текст сообщения:" 
+               Grid.Column="3" 
+               Grid.Row="3" 
+               Margin="5,5,10,0"/>
+        
         <TextBox x:Name="textBoxMessage" 
                  Grid.Column="3" 
                  Grid.Row="4" 
@@ -197,34 +314,77 @@
                  SpellCheck.IsEnabled="True" 
                  TextWrapping="Wrap"
                  VerticalScrollBarVisibility="Auto"/>
-        <StackPanel Grid.Column="0" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button x:Name="buttonPhoneNumberAdd" Margin="5,5,5,10" Width="20" Height="20" ToolTip="Добавить" Click="ButtonPhoneNumberAdd_Click">
+        
+        <StackPanel Grid.Column="0" 
+                    Grid.Row="6" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center">
+            
+            <Button x:Name="buttonPhoneNumberAdd" 
+                    Margin="5,5,5,10" 
+                    Width="20" 
+                    Height="20" 
+                    ToolTip="Добавить" 
+                    Click="ButtonPhoneNumberAdd_Click">
                 <Button.Content>
                     <Image Source="{StaticResource Add}"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="buttonPhoneNumberEdit" Margin="5,5,5,10" Width="20" Height="20" ToolTip="Изменить" Click="ButtonPhoneNumberEdit_Click" IsEnabled="False">
+            
+            <Button x:Name="buttonPhoneNumberEdit" 
+                    Margin="5,5,5,10" 
+                    Width="20" 
+                    Height="20" 
+                    ToolTip="Изменить" 
+                    Click="ButtonPhoneNumberEdit_Click" 
+                    IsEnabled="False">
                 <Button.Content>
                     <Image Source="{StaticResource Edit}"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="buttonPhoneNumberRemove" Margin="5,5,5,10" Width="20" Height="20" ToolTip="Удалить" Click="ButtonPhoneNumberRemove_Click" IsEnabled="False">
+            
+            <Button x:Name="buttonPhoneNumberRemove" 
+                    Margin="5,5,5,10"
+                    Width="20" 
+                    Height="20" 
+                    ToolTip="Удалить" 
+                    Click="ButtonPhoneNumberRemove_Click" 
+                    IsEnabled="False">
                 <Button.Content>
                     <Image Source="{StaticResource Remove}"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="buttonPhoneNumberImport" Margin="25,5,5,10" Width="20" Height="20" ToolTip="Импорт из Excel" Click="ButtonPhoneNumberImport_Click">
+            
+            <Button x:Name="buttonPhoneNumberImport" 
+                    Margin="25,5,5,10" 
+                    Width="20" 
+                    Height="20" 
+                    ToolTip="Импорт из Excel"
+                    Click="ButtonPhoneNumberImport_Click">
                 <Button.Content>
                     <Image Source="{StaticResource Import}"/>
                 </Button.Content>
             </Button>
         </StackPanel>
-        <Button x:Name="buttonMessagesHistory" Grid.Column="2" Grid.Row="6" Width="20" Height="20" Margin="5,5,5,10" ToolTip="История отправок" Click="ButtonMessagesHistory_Click">
+        
+        <Button x:Name="buttonMessagesHistory" 
+                Grid.Column="2" 
+                Grid.Row="6" 
+                Width="20" 
+                Height="20" 
+                Margin="5,5,5,10" 
+                ToolTip="История отправок" 
+                Click="ButtonMessagesHistory_Click">
             <Button.Content>
                 <Image Source="{StaticResource History}"/>
             </Button.Content>
         </Button>
-        <StackPanel Grid.Column="3" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
+        
+        <StackPanel Grid.Column="3" 
+                    Grid.Row="6" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center">
+            
             <CheckBox x:Name="checkBoxNow" 
                       Content="Сейчас" 
                       Margin="5,5,5,10" 
@@ -233,6 +393,7 @@
                       IsEnabled="False"
                       Checked="CheckBox_CheckedChanged" 
                       Unchecked="CheckBox_CheckedChanged"/>
+            
             <CheckBox x:Name="checkBoxSelectedTime" 
                       Content="В заданное время:" 
                       Margin="5,5,5,10" 
@@ -240,6 +401,7 @@
                       IsEnabled="False" 
                       Checked="CheckBox_CheckedChanged" 
                       Unchecked="CheckBox_CheckedChanged"/>
+            
             <xctk:DateTimePicker x:Name="dateTimePicker" 
                                  DisplayDefaultValueOnEmptyText="True" 
                                  Format="Custom" 
@@ -248,6 +410,7 @@
                                  Margin="5,5,5,10" 
                                  IsEnabled="False" 
                                  AutoCloseCalendar="True"/>
+            
             <Button x:Name="buttonMessageSend" 
                     Margin="25,5,5,10" 
                     ToolTip="Отправить" 
