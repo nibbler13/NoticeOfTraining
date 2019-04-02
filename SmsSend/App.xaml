@@ -1,7 +1,7 @@
-﻿<Application x:Class="NoticeOfTraining.App"
+﻿<Application x:Class="SmsSend.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:NoticeOfTraining"
+             xmlns:local="clr-namespace:SmsSend"
              StartupUri="WindowMain.xaml">
     <Application.Resources>
         <BitmapImage x:Key="Import" UriSource="pack://application:,,,/Resources/Import_16x.png"/>

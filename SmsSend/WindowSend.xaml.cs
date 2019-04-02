@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace NoticeOfTraining {
+namespace SmsSend {
 	/// <summary>
 	/// Логика взаимодействия для WindowSend.xaml
 	/// </summary>
@@ -54,6 +54,9 @@ namespace NoticeOfTraining {
 				UpdateState(progressCurrent, "Выбранное время: " + ((DateTime)ItemHistory.DateTimeSelected).ToString("yyyy-MM-dd HH:mm"));
 			}
 
+			bool isAllGood = true;
+			string finalMessage = "Все сообщения успешно обработаны";
+
 			foreach (ItemPhoneNumber number in ItemHistory.PhoneNumbers) {
 				UpdateState(progressCurrent, "Получатель: " + number.Name + ", номер телефона: " + number.PhoneNumber);
 
@@ -71,11 +74,38 @@ namespace NoticeOfTraining {
 
 					sendMessageResult.ItemPhoneNumber = number;
 					ItemHistory.Results.Add(sendMessageResult);
+
+					if (!sendMessageResult.IsSuccessStatusCode) {
+						isAllGood = false;
+						finalMessage = "Внимание! Имеются проблемы при обработке сообщений";
+						continue;
+					}
+
+					if (!long.TryParse(sendMessageResult.MessageId, out long smsID))
+						continue;
+
+					Dictionary<string, object> param = new Dictionary<string, object> {
+						{ "@smsID", smsID },
+						{ "@sendDate", DateTime.Now },
+						{ "@recipientName", number.Name },
+						{ "@recipientPhone", number.PhoneNumber },
+						{ "@smsText", ItemHistory.MessageText },
+						{ "@isRightNow", sendType.Key.Contains("сейчас") ? 1 : 0 },
+						{ "@isDelayed", sendType.Key.Contains("заданное") ? 1 : 0 },
+						{ "@delayedTime", ItemHistory.DateTimeSelected }
+					};
+
+					FirebirdClient.Instance.ExecuteUpdateQuery(FirebirdClient.Instance.sqlInsert, param);						
 				}
 			}
 
 			buttonClose.IsEnabled = true;
-			MessageBox.Show("Операции завершены", "", MessageBoxButton.OK, MessageBoxImage.Information);
+			MessageBox.Show(
+				Application.Current.MainWindow,
+				finalMessage,
+				"Операции завершены",
+				MessageBoxButton.OK,
+				isAllGood ? MessageBoxImage.Information : MessageBoxImage.Warning);
 		}
 
 		private void buttonClose_Click(object sender, RoutedEventArgs e) {

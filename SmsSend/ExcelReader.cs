@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace NoticeOfTraining {
+namespace SmsSend {
     class ExcelReader {
 		public static List<ItemPhoneNumber> ReadPhoneNumbers(
 			string fileName, string sheetName, string columnName, 

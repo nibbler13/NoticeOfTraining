@@ -265,3 +265,6 @@ Re Ticket#1074481 FW FW API.msg
 *.settings
 SmsSend/Properties/Settings.Designer.cs
 SmsSend/IntellinPrivateData.cs
+SmsSend/FirebirdClientParameters.cs
+FW смена оператора смс-рассылки2.msg
+RE смена оператора смс-рассылки.msg

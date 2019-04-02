@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoticeOfTraining {
+namespace SmsSend {
     public class ItemHistory {
 		public bool SendNow { get; set; }
 		public string SendNowString {

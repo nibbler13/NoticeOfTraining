@@ -5,12 +5,13 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
-namespace NoticeOfTraining {
+namespace SmsSend {
 	class SmsGate {
 		public enum Provider { SvyaznoyZagruzka, Intellin }
 
-		public async static Task<ItemSendResult> SendMessage(string phoneNumber, string message, DateTime? dateTime = null, Provider provider = Provider.Intellin ) {
+		public async static Task<ItemSendResult> SendMessage(string phoneNumber, string message, DateTime? dateTime = null, Provider provider = Provider.SvyaznoyZagruzka ) {
 			ItemSendResult itemSendResult = new ItemSendResult();
 
 			try {
@@ -79,7 +80,7 @@ namespace NoticeOfTraining {
 			return itemSendResult;
 		}
 
-		public static ItemDeliveryState GetDeliveryStateContent(string messageId, Provider provider = Provider.Intellin) {
+		public static ItemDeliveryState GetDeliveryStateContent(string messageId, Provider provider = Provider.SvyaznoyZagruzka) {
 			ItemDeliveryState itemDeliveryState = new ItemDeliveryState();
 
 			try {

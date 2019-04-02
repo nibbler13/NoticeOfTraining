@@ -15,10 +15,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml.Serialization;
 
-namespace NoticeOfTraining {
+namespace SmsSend {
 	/// <summary>
 	/// Логика взаимодействия для MainWindow.xaml
 	/// </summary>
@@ -29,6 +28,15 @@ namespace NoticeOfTraining {
 		private GridViewColumnHeader _sortColumnReceiversItems;
 		private ListSortDirection _sortDirectionTemplateItems;
 		private GridViewColumnHeader _sortColumnTemplateItems;
+
+		private readonly string userFolder = Path.Combine(Directory.GetCurrentDirectory(), "UserData", Environment.UserName);
+		private readonly string savedPhoneNumbersFile = "PhoneNumberSavedItems.xml";
+		private readonly string templatesFile = "TemplateItems.xml";
+		private readonly string historyFile = "HistoryItems.xml";
+		private readonly string savedPhoneNumbersPath;
+		private readonly string templatePersonalPath;
+		private readonly string templateGeneralPath;
+		private readonly string historyPath;
 
 		public ObservableCollection<ItemPhoneNumber> PhoneNumberSavedItems { get; set; }
 		public ObservableCollection<ItemPhoneNumber> PhoneNumberReceiversItems { get; set; }
@@ -46,6 +54,10 @@ namespace NoticeOfTraining {
 			listViewPhoneNumbersReceivers.DataContext = this;
 			listViewTemplates.DataContext = this;
 
+			savedPhoneNumbersPath = Path.Combine(userFolder, savedPhoneNumbersFile);
+			templatePersonalPath = Path.Combine(userFolder, templatesFile);
+			templateGeneralPath = Path.Combine(Directory.GetCurrentDirectory(), templatesFile);
+			historyPath = Path.Combine(userFolder, historyFile);
 
 			PhoneNumberSavedItems.CollectionChanged += PhoneNumberItems_CollectionChanged;
 			PhoneNumberReceiversItems.CollectionChanged += ReceiversPhoneNumberItems_CollectionChanged;
@@ -79,12 +91,20 @@ namespace NoticeOfTraining {
 		}
 
 		private void LoadCollections() {
+			try {
+				if (!Directory.Exists(userFolder))
+					Directory.CreateDirectory(userFolder);
+			} catch (Exception exception) {
+				Console.WriteLine(exception.Message + Environment.NewLine + exception.StackTrace);
+			}
+
 			XmlSerializer serializerPhoneItem = new XmlSerializer(typeof(ObservableCollection<ItemPhoneNumber>));
-			XmlSerializer serializerTemplateItem = new XmlSerializer(typeof(ObservableCollection<ItemTemplate>));
+			XmlSerializer serializerTemplatePersonalItem = new XmlSerializer(typeof(ObservableCollection<ItemTemplate>));
+			XmlSerializer serializerTemplateGeneralItem = new XmlSerializer(typeof(ObservableCollection<ItemTemplate>));
 			XmlSerializer serializerHistoryItem = new XmlSerializer(typeof(ObservableCollection<ItemHistory>));
 
 			try {
-				using (FileStream fileStream = new FileStream("PhoneNumberSavedItems.xml", FileMode.Open)) {
+				using (FileStream fileStream = new FileStream(savedPhoneNumbersPath, FileMode.Open)) {
 					ObservableCollection<ItemPhoneNumber> observableCollection =
 						serializerPhoneItem.Deserialize(fileStream) as ObservableCollection<ItemPhoneNumber>;
 					foreach (ItemPhoneNumber item in observableCollection)
@@ -97,9 +117,9 @@ namespace NoticeOfTraining {
 			}
 
 			try {
-				using (FileStream fileStream = new FileStream("TemplateItems.xml", FileMode.Open)) {
+				using (FileStream fileStream = new FileStream(templatePersonalPath, FileMode.Open)) {
 					ObservableCollection<ItemTemplate> observableCollection =
-						serializerTemplateItem.Deserialize(fileStream) as ObservableCollection<ItemTemplate>;
+						serializerTemplatePersonalItem.Deserialize(fileStream) as ObservableCollection<ItemTemplate>;
 					foreach (ItemTemplate item in observableCollection)
 						Application.Current.Dispatcher.Invoke(() => {
 							TemplateItems.Add(item);
@@ -110,7 +130,26 @@ namespace NoticeOfTraining {
 			}
 
 			try {
-				using (FileStream fileStream = new FileStream("HistoryItems.xml", FileMode.Open)) {
+				using (FileStream fileStream = new FileStream(templateGeneralPath, FileMode.Open)) {
+					ObservableCollection<ItemTemplate> observableCollection =
+						serializerTemplateGeneralItem.Deserialize(fileStream) as ObservableCollection<ItemTemplate>;
+					foreach (ItemTemplate item in observableCollection)
+						Application.Current.Dispatcher.Invoke(() => {
+							IEnumerable<ItemTemplate> existingItems = 
+								from templateItem in TemplateItems
+								where templateItem.Name.Equals(item.Name) && templateItem.Message.Equals(item.Message)
+								select templateItem;
+
+							if (existingItems.Count() == 0)
+								TemplateItems.Add(item);
+						});
+				}
+			} catch (Exception exception) {
+				Console.WriteLine(exception.Message + Environment.NewLine + exception.StackTrace);
+			}
+
+			try {
+				using (FileStream fileStream = new FileStream(historyPath, FileMode.Open)) {
 					ObservableCollection<ItemHistory> observableCollection =
 						serializerHistoryItem.Deserialize(fileStream) as ObservableCollection<ItemHistory>;
 					foreach (ItemHistory item in observableCollection)
@@ -131,21 +170,21 @@ namespace NoticeOfTraining {
 			XmlSerializer serializerHistoryItem = new XmlSerializer(typeof(ObservableCollection<ItemHistory>));
 
 			try {
-				using (StreamWriter writer = new StreamWriter("PhoneNumberSavedItems.xml"))
+				using (StreamWriter writer = new StreamWriter(savedPhoneNumbersPath))
 					serializerPhoneItem.Serialize(writer, PhoneNumberSavedItems);
 			} catch (Exception exception) {
 				Console.WriteLine(exception.Message + Environment.NewLine + exception.StackTrace);
 			}
 
 			try {
-				using (StreamWriter writer = new StreamWriter("TemplateItems.xml"))
+				using (StreamWriter writer = new StreamWriter(templatePersonalPath))
 					serializerTemplateItem.Serialize(writer, TemplateItems);
 			} catch (Exception exception) {
 				Console.WriteLine(exception.Message + Environment.NewLine + exception.StackTrace);
 			}
 			
 			try {
-				using (StreamWriter writer = new StreamWriter("HistoryItems.xml"))
+				using (StreamWriter writer = new StreamWriter(historyPath))
 					serializerHistoryItem.Serialize(writer, HistoryItems);
 			} catch (Exception exception) {
 				Console.WriteLine(exception.Message + Environment.NewLine + exception.StackTrace);

@@ -6,8 +6,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoticeOfTraining {
-	public class ItemPhoneNumber : INotifyPropertyChanged {
+namespace SmsSend {
+    public class ItemTemplate : INotifyPropertyChanged {
 		public event PropertyChangedEventHandler PropertyChanged;
 		private void NotifyPropertyChanged([CallerMemberName] String propertyName = "") {
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -26,21 +26,17 @@ namespace NoticeOfTraining {
 			}
 		}
 
-		private string _phoneNumber = string.Empty;
-		public string PhoneNumber {
+		private string _message = string.Empty;
+		public string Message {
 			get {
-				return _phoneNumber;
+				return _message;
 			}
 			set {
-				if (value != _phoneNumber) {
-					_phoneNumber = value;
+				if (value != _message) {
+					_message = value;
 					NotifyPropertyChanged();
 				}
 			}
-		}
-
-		public string GetClearedNumber() {
-			return new String(_phoneNumber.Where(Char.IsDigit).ToArray());
 		}
 	}
 }
