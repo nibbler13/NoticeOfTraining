@@ -39,8 +39,8 @@ namespace SmsSend {
 			Console.WriteLine("SendMessages");
 
 			double progressCurrent = 0;
-			double progressStep = 100 / 
-				((Convert.ToInt32(ItemHistory.SendNow) + Convert.ToInt32(ItemHistory.SendLater)) * ItemHistory.PhoneNumbers.Count);
+			double progressStep = (double)100 / 
+				(double)((Convert.ToInt32(ItemHistory.SendNow) + Convert.ToInt32(ItemHistory.SendLater)) * ItemHistory.PhoneNumbers.Count);
 
 			UpdateState(progressCurrent, "Текст сообщения: " + ItemHistory.MessageText);
 

@@ -72,8 +72,8 @@ namespace SmsSend {
 
 			//double progressStep = (100 - progressCurrent) / xlRange.Rows.Count;
 			double progressStep = (100 - progressCurrent) / dt.Rows.Count;
-			int columnNameIndex = GetExcelColumnNumber(columnName);
-			int columnPhoneNumberIndex = GetExcelColumnNumber(columnPhoneNumber);
+			int columnNameIndex = GetExcelColumnNumber(columnName) - 1;
+			int columnPhoneNumberIndex = GetExcelColumnNumber(columnPhoneNumber) - 1;
 
 			//for (int i = 1; i <= xlRange.Rows.Count; i++) {
 			foreach (DataRow dr in dt.Rows) {
@@ -81,8 +81,8 @@ namespace SmsSend {
 					progressCurrent += progressStep;
 					//UpdateProgress(progressCurrent, "Разбор строки " + i);
 
-					string name = dr[0].ToString();
-					string phoneNumber = dr[1].ToString();
+					string name = dr[columnNameIndex].ToString();
+					string phoneNumber = dr[columnPhoneNumberIndex].ToString();
 
 					if (string.IsNullOrEmpty(phoneNumber))
 						continue;
