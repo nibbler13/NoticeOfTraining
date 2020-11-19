@@ -46,7 +46,7 @@ namespace SmsSend {
 				}
 
 				client.BaseAddress = uri;
-				HttpResponseMessage responseMessage = await client.GetAsync(string.Empty);
+				HttpResponseMessage responseMessage = client.GetAsync(uri).Result;
 				string content = await responseMessage.Content.ReadAsStringAsync();
 				
 				itemSendResult.IsSuccessStatusCode = responseMessage.IsSuccessStatusCode;

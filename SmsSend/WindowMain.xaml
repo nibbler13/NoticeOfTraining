@@ -6,420 +6,813 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Отправка СМС-сообщений" 
-        Height="400" 
+        Height="500" 
         Width="1000" 
-        Background="#FFF0F0F0" 
         WindowStartupLocation="CenterScreen" 
         MinWidth="1000" 
-        MinHeight="400">
-    <Window.Resources>
-        <DataTemplate x:Key="ArrowUp">
-            <DockPanel>
-                <TextBlock HorizontalAlignment="Center"
-                           Text="{Binding}" />
-                <Path VerticalAlignment="Center"
-                      Fill="Black"
-                      Data="M 5,5 15,5 10,0 5,5" />
-            </DockPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="ArrowDown">
-            <DockPanel>
-                <TextBlock HorizontalAlignment="Center"
-                           Text="{Binding}" />
-                <Path VerticalAlignment="Center"
-                      Fill="Black"
-                      Data="M 5,0 10,5 15,0 5,0" />
-            </DockPanel>
-        </DataTemplate>
-    </Window.Resources>
-    
+        MinHeight="500">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="46"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
-        
-        <Label Content="Сохраненные номера телефонов:" 
-               Grid.Column="0" 
-               Grid.Row="0" 
-               Margin="10,10,5,0"/>
-        
-        <Label Content="Получатели рассылки:" 
-               Grid.Column="2" 
-               Grid.Row="0" 
-               Margin="5,10,5,0"/>
-        
-        <Label Content="Шаблоны сообщений:" 
-               Grid.Column="3" 
-               Grid.Row="0" 
-               Margin="5,10,10,0"/>
-        
-        <ListView x:Name="listViewPhoneNumbersSaved" 
-                  ItemsSource="{Binding PhoneNumberSavedItems}" 
-                  Grid.Column="0" 
-                  Grid.Row="1" 
-                  Grid.RowSpan="4" 
-                  Margin="10,0,5,5" 
-                  GridViewColumnHeader.Click="ListViewColumnHeader_Click"
-                  HorizontalContentAlignment="Stretch"
-                  SelectionChanged="ListViewPhoneNumbersSaved_SelectionChanged">
-            <ListView.Resources>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="MouseDoubleClick"
-                                 Handler="ListViewPhoneNumberSavedItem_MouseDoubleClick"/>
-                </Style>
-            </ListView.Resources>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Имя" 
-                                    DisplayMemberBinding="{Binding Name}" 
-                                    Width="{Binding ElementName=helperFieldPhoneNumbersSaved, Path=ActualWidth}"/>
-                    <GridViewColumn Header="Номер телефона" 
-                                    DisplayMemberBinding="{Binding PhoneNumber}" 
-                                    x:Name="columnPhoneNumberSaved"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
-        <Grid Visibility="Hidden" 
-              Grid.Row="1" 
-              Grid.Column="0" 
-              Grid.RowSpan="4" 
-              Margin="10,0,5,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding ElementName=columnPhoneNumberSaved, Path=ActualWidth}"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="10"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="1" x:Name="helperFieldPhoneNumbersSaved"/>
-        </Grid>
-        
-        <StackPanel Grid.Column="0" 
-                    Grid.Row="5" 
-                    VerticalAlignment="Center" 
-                    Margin="10,5,5,5">
-            <TextBlock Text="Фильтр по имени:" 
-                       HorizontalAlignment="Center"/>
-            <TextBox x:Name="textBoxFilter" 
-                     TextChanged="TextBoxFilter_TextChanged"/>
-        </StackPanel>
-        
-        <StackPanel Grid.Column="1" 
-                    Grid.Row="1" 
-                    Grid.RowSpan="4" 
-                    Orientation="Vertical" 
-                    VerticalAlignment="Center">
-            
-            <Button x:Name="buttonReceiversAddSelected" 
-                    Margin="5" 
-                    Width="20"
-                    Height="20"
-                    ToolTip="Переместить выбранное в список получателей" 
-                    Click="ButtonReceiversAddSelected_Click" 
-                    IsEnabled="False">
-                <Button.Content>
-                    <Image Source="{StaticResource Right}"/>
-                </Button.Content>
-            </Button>
-            
-            <Button x:Name="buttonReceiversAddAll" 
-                    Margin="5" 
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Переместить все в список получателей"
-                    Click="ButtonReceiversAddAll_Click" 
-                    IsEnabled="False">
-                <Button.Content>
-                    <Image Source="{StaticResource RightDouble}"/>
-                </Button.Content>
-            </Button>
-            
-            <Button x:Name="buttonReceiversRemoveAll" 
-                    Margin="5"
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Убрать все из списка получателей"
-                    Click="ButtonReceiversRemoveAll_Click"
-                    IsEnabled="False">
-                <Button.Content>
-                    <Image Source="{StaticResource LeftDouble}"/>
-                </Button.Content>
-            </Button>
 
-            <Button x:Name="buttonReceiversRemoveSelected" 
-                    Margin="5" 
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Убрать выбранное из списка получателей" 
-                    Click="ButtonReceiversRemoveSelected_Click" 
-                    IsEnabled="False">
-                <Button.Content>
-                    <Image Source="{StaticResource Left}"/>
-                </Button.Content>
-            </Button>
-        </StackPanel>
-        
-        <ListView x:Name="listViewPhoneNumbersReceivers" 
-                  ItemsSource="{Binding PhoneNumberReceiversItems}" 
-                  Grid.Column="2" 
-                  Grid.Row="1" 
-                  Grid.RowSpan="5" 
-                  Margin="5,0,5,5" 
-                  GridViewColumnHeader.Click="ListViewColumnHeader_Click"
-                  SelectionChanged="ListViewPhoneNumbersReceivers_SelectionChanged">
-            <ListView.Resources>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="MouseDoubleClick" 
-                                 Handler="ListViewPhoneNumberReceiversItem_MouseDoubleClick"/>
-                </Style>
-            </ListView.Resources>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Имя" 
-                                    DisplayMemberBinding="{Binding Name}" 
-                                    Width="{Binding ElementName=helperFieldPhoneNumbersReceivers, Path=ActualWidth}"/>
-                    <GridViewColumn Header="Номер телефона" 
-                                    DisplayMemberBinding="{Binding PhoneNumber}" 
-                                    x:Name="columnPhoneNumberReceivers"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
-        <Grid Visibility="Hidden" 
-              Grid.Row="1" 
-              Grid.Column="2" 
-              Grid.RowSpan="5" 
-              Margin="5,0,5,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding ElementName=columnPhoneNumberReceivers, Path=ActualWidth}"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="10"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="1" x:Name="helperFieldPhoneNumbersReceivers"/>
-        </Grid>
-        
-        <ListView x:Name="listViewTemplates" 
-                  ItemsSource="{Binding TemplateItems}" 
-                  Grid.Column="3" 
-                  Grid.Row="1" 
-                  Margin="5,0,10,5" 
-                  GridViewColumnHeader.Click="ListViewColumnHeader_Click"
-                  SelectionChanged="ListViewTemplates_SelectionChanged">
-            <ListView.Resources>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="MouseDoubleClick" 
-                                 Handler="ListViewTemplateItem_MouseDoubleClick"/>
-                </Style>
-            </ListView.Resources>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Название" 
-                                    DisplayMemberBinding="{Binding Name}" 
-                                    Width="150" 
-                                    x:Name="columnMessage"/>
-                    <GridViewColumn Header="Текст сообщения" 
-                                    DisplayMemberBinding="{Binding Message}" 
-                                    Width="{Binding ElementName=helperFieldTemplates, Path=ActualWidth}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
-        <Grid Visibility="Hidden" Grid.Row="1" Grid.Column="3" Margin="5,0,10,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding ElementName=columnMessage, Path=ActualWidth}"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="10"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="1" x:Name="helperFieldTemplates"/>
-        </Grid>
-        
-        <StackPanel Grid.Column="3" 
-                    Grid.Row="2" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Center">
-            
-            <Button x:Name="buttonTemplateAdd" 
-                    Margin="5"
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Добавить" 
-                    Click="ButtonTemplateAdd_Click">
-                <Button.Content>
-                    <Image Source="{StaticResource Add}"/>
-                </Button.Content>
-            </Button>
-            
-            <Button x:Name="buttonTemplateEdit" 
-                    Margin="5" 
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Изменить" 
-                    Click="ButtonTemplateEdit_Click"
-                    IsEnabled="False">
-                <Button.Content>
-                    <Image Source="{StaticResource Edit}"/>
-                </Button.Content>
-            </Button>
-            
-            <Button x:Name="buttonTemplateRemove" 
-                    Margin="5" 
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Удалить" 
-                    Click="ButtonTemplateRemove_Click" 
-                    IsEnabled="False">
-                <Button.Content>
-                    <Image Source="{StaticResource Remove}" 
-                           IsEnabled="False" 
-                           IsHitTestVisible="False"/>
-                </Button.Content>
-            </Button>
-            
-            <Button x:Name="buttonTemplateUse" 
-                    Margin="25,5,5,5" 
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Использовать в качестве текста сообщения" 
-                    Click="ButtonTemplateUse_Click" 
-                    IsEnabled="False">
-                <Button.Content>
-                    <Image Source="{StaticResource Down}" 
-                           IsEnabled="False"/>
-                </Button.Content>
-            </Button>
-        </StackPanel>
-        
-        <Label Content="Текст сообщения:" 
-               Grid.Column="3" 
-               Grid.Row="3" 
-               Margin="5,5,10,0"/>
-        
-        <TextBox x:Name="textBoxMessage" 
-                 Grid.Column="3" 
-                 Grid.Row="4" 
-                 Grid.RowSpan="2"
-                 Margin="5,0,10,5" 
-                 TextChanged="TextBoxMessage_TextChanged" 
-                 SpellCheck.IsEnabled="True" 
-                 TextWrapping="Wrap"
-                 VerticalScrollBarVisibility="Auto"/>
-        
-        <StackPanel Grid.Column="0" 
-                    Grid.Row="6" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Center">
-            
-            <Button x:Name="buttonPhoneNumberAdd" 
-                    Margin="5,5,5,10" 
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Добавить" 
-                    Click="ButtonPhoneNumberAdd_Click">
-                <Button.Content>
-                    <Image Source="{StaticResource Add}"/>
-                </Button.Content>
-            </Button>
-            
-            <Button x:Name="buttonPhoneNumberEdit" 
-                    Margin="5,5,5,10" 
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Изменить" 
-                    Click="ButtonPhoneNumberEdit_Click" 
-                    IsEnabled="False">
-                <Button.Content>
-                    <Image Source="{StaticResource Edit}"/>
-                </Button.Content>
-            </Button>
-            
-            <Button x:Name="buttonPhoneNumberRemove" 
-                    Margin="5,5,5,10"
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Удалить" 
-                    Click="ButtonPhoneNumberRemove_Click" 
-                    IsEnabled="False">
-                <Button.Content>
-                    <Image Source="{StaticResource Remove}"/>
-                </Button.Content>
-            </Button>
-            
-            <Button x:Name="buttonPhoneNumberImport" 
-                    Margin="25,5,5,10" 
-                    Width="20" 
-                    Height="20" 
-                    ToolTip="Импорт из Excel"
-                    Click="ButtonPhoneNumberImport_Click">
-                <Button.Content>
-                    <Image Source="{StaticResource Import}"/>
-                </Button.Content>
-            </Button>
-        </StackPanel>
-        
-        <Button x:Name="buttonMessagesHistory" 
-                Grid.Column="2" 
-                Grid.Row="6" 
-                Width="20" 
-                Height="20" 
-                Margin="5,5,5,10" 
-                ToolTip="История отправок" 
-                Click="ButtonMessagesHistory_Click">
-            <Button.Content>
-                <Image Source="{StaticResource History}"/>
-            </Button.Content>
-        </Button>
-        
-        <StackPanel Grid.Column="3" 
-                    Grid.Row="6" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Center">
-            
-            <CheckBox x:Name="checkBoxNow" 
-                      Content="Сейчас" 
-                      Margin="5,5,5,10" 
-                      VerticalContentAlignment="Center" 
-                      IsChecked="True" 
-                      IsEnabled="False"
-                      Checked="CheckBox_CheckedChanged" 
-                      Unchecked="CheckBox_CheckedChanged"/>
-            
-            <CheckBox x:Name="checkBoxSelectedTime" 
-                      Content="В заданное время:" 
-                      Margin="5,5,5,10" 
-                      VerticalContentAlignment="Center" 
-                      IsEnabled="False" 
-                      Checked="CheckBox_CheckedChanged" 
-                      Unchecked="CheckBox_CheckedChanged"/>
-            
-            <xctk:DateTimePicker x:Name="dateTimePicker" 
+        <TabControl Margin="10">
+            <TabItem Header="Обычная отправка">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" MinWidth="430"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="1*" MinWidth="300"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Сохраненные номера телефонов:"/>
+
+                            <DataGrid Grid.Row="2" 
+                                  ItemsSource="{Binding PhoneNumberSavedItems}" 
+                                  CanUserDeleteRows="False"
+                                  CanUserAddRows="False"
+                                  CanUserReorderColumns="False"
+                                  HorizontalGridLinesBrush="#FFC8C8C8"
+                                  VerticalGridLinesBrush="LightGray"
+                                  SelectionMode="Extended"
+                                  SelectionUnit="FullRow"
+                                  SelectionChanged="DataGridPhoneNumbersSaved_SelectionChanged"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  MouseDoubleClick="DataGridPhoneNumberSavedItem_MouseDoubleClick"
+                                  x:Name="DataGridPhoneNumbersSaved" >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <Grid Grid.Row="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Button x:Name="buttonPhoneNumberAdd" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Добавить" 
+                                        Click="ButtonPhoneNumberAdd_Click">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Add}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="2"
+                                        x:Name="buttonPhoneNumberEdit" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Изменить" 
+                                        Click="ButtonPhoneNumberEdit_Click" 
+                                        IsEnabled="False">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Edit}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="4"
+                                        x:Name="buttonPhoneNumberRemove" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Удалить" 
+                                        Click="ButtonPhoneNumberRemove_Click" 
+                                        IsEnabled="False">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Remove}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="5" 
+                                        x:Name="buttonPhoneNumberImport" 
+                                        Height="20" 
+                                        HorizontalAlignment="Center"
+                                        ToolTip="Импорт из Excel"
+                                        Click="ButtonPhoneNumberImport_Click">
+                                    <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                                        <Image Source="{StaticResource Excel}"/>
+                                        <TextBlock Text="Импорт" Margin="6,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <Button Grid.Column="6" 
+                                        x:Name="ButtonPhoneNumberSavedClear"
+                                        Height="20"
+                                        ToolTip="Очистить сохраненные номера"
+                                        Click="ButtonPhoneNumberSavedClear_Click"
+                                        IsEnabled="False">
+                                    <Image Source="Resources/CleanData_16x.png"/>
+                                </Button>
+                            </Grid>
+
+                            <StackPanel Grid.Row="6" 
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="Фильтр по имени:" 
+                                       HorizontalAlignment="Left"/>
+                                <Grid Margin="0,6,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox x:Name="textBoxFilter" 
+                                             TextChanged="TextBoxFilter_TextChanged"/>
+                                    <Button Grid.Column="1"
+                                            Height="20"
+                                            ToolTip="Очистить фильтр"
+                                            Margin="6,0,0,0"
+                                            Click="ButtonClearFilter_Click"
+                                            x:Name="ButtonClearFilter"
+                                            IsEnabled="False">
+                                        <Image Source="Resources/CleanData_16x.png"/>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel Grid.Column="2" 
+                                Orientation="Vertical" 
+                                VerticalAlignment="Center">
+
+                            <Button x:Name="buttonReceiversAddSelected" 
+                                Width="20"
+                                Height="20"
+                                ToolTip="Переместить выбранное в список получателей" 
+                                Click="ButtonReceiversAddSelected_Click" 
+                                IsEnabled="False">
+                                <Button.Content>
+                                    <Image Source="{StaticResource Right}"/>
+                                </Button.Content>
+                            </Button>
+
+                            <Button x:Name="buttonReceiversAddAll" 
+                                Width="20" 
+                                Height="20" 
+                                Margin="0,10,0,0"
+                                ToolTip="Переместить все в список получателей"
+                                Click="ButtonReceiversAddAll_Click" 
+                                IsEnabled="False">
+                                <Button.Content>
+                                    <Image Source="{StaticResource RightDouble}"/>
+                                </Button.Content>
+                            </Button>
+
+                            <Button x:Name="buttonReceiversRemoveAll" 
+                                Width="20" 
+                                Height="20"
+                                Margin="0,10,0,0" 
+                                ToolTip="Убрать все из списка получателей"
+                                Click="ButtonReceiversRemoveAll_Click"
+                                IsEnabled="False">
+                                <Button.Content>
+                                    <Image Source="{StaticResource LeftDouble}"/>
+                                </Button.Content>
+                            </Button>
+
+                            <Button x:Name="buttonReceiversRemoveSelected" 
+                                Width="20" 
+                                Height="20"
+                                Margin="0,10,0,0" 
+                                ToolTip="Убрать выбранное из списка получателей" 
+                                Click="ButtonReceiversRemoveSelected_Click" 
+                                IsEnabled="False">
+                                <Button.Content>
+                                    <Image Source="{StaticResource Left}"/>
+                                </Button.Content>
+                            </Button>
+                        </StackPanel>
+
+                        <Grid Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Получатели сообщения:"/>
+
+                            <DataGrid x:Name="DataGridPhoneNumbersReceivers" 
+                                  ItemsSource="{Binding PhoneNumberReceiversItems}" 
+                                  Grid.Row="2" 
+                                  CanUserDeleteRows="False"
+                                  CanUserAddRows="False"
+                                  CanUserReorderColumns="False"
+                                  HorizontalGridLinesBrush="#FFC8C8C8"
+                                  VerticalGridLinesBrush="LightGray"
+                                  SelectionMode="Extended"
+                                  SelectionUnit="FullRow"
+                                  SelectionChanged="DataGridPhoneNumbersReceivers_SelectionChanged"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  VerticalAlignment="Top"
+                                  MouseDoubleClick="DataGridPhoneNumberReceiversItem_MouseDoubleClick"
+                                  Height="{Binding ElementName=DataGridPhoneNumbersSaved,Path=ActualHeight}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <TextBlock Grid.Row="4"
+                                   Text="{Binding TextPhoneNumberReceiversCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Foreground="DarkGray"/>
+                        </Grid>
+                    </Grid>
+                    
+                    <GridSplitter Grid.Column="1"
+                                  Width="2"
+                                  Margin="0,22,0,76"
+                                  HorizontalAlignment="Center"
+                                  ResizeBehavior="PreviousAndNext"/>
+
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="6"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="6"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Шаблоны сообщений:"/>
+
+                        <Grid Grid.Row="2"
+                              Height="{Binding ElementName=DataGridPhoneNumbersSaved,Path=ActualHeight}">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <DataGrid ItemsSource="{Binding TemplateItems}" 
+                                      CanUserDeleteRows="False"
+                                      CanUserAddRows="False"
+                                      CanUserReorderColumns="False"
+                                      HorizontalGridLinesBrush="#FFC8C8C8"
+                                      VerticalGridLinesBrush="LightGray"
+                                      SelectionMode="Extended"
+                                      SelectionUnit="FullRow" 
+                                      SelectionChanged="DataGridTemplates_SelectionChanged"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      MouseDoubleClick="DataGridTemplateItem_MouseDoubleClick"
+                                      x:Name="DataGridTemplates">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Текст сообщения" Binding="{Binding Message}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Button x:Name="buttonTemplateAdd" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Добавить" 
+                                        Click="ButtonTemplateAdd_Click">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Add}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="2"
+                                        x:Name="buttonTemplateEdit" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Изменить" 
+                                        Click="ButtonTemplateEdit_Click"
+                                        IsEnabled="False">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Edit}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="4"
+                                        x:Name="buttonTemplateRemove" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Удалить" 
+                                        Click="ButtonTemplateRemove_Click" 
+                                        IsEnabled="False">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Remove}" 
+                                           IsEnabled="False" 
+                                           IsHitTestVisible="False"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="5"
+                                        x:Name="buttonTemplateUse" 
+                                        HorizontalAlignment="Right"
+                                        Height="20" 
+                                        ToolTip="Использовать в качестве текста сообщения" 
+                                        Click="ButtonTemplateUse_Click" 
+                                        IsEnabled="False">
+                                    <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                                        <Image Source="{StaticResource Down}"/>
+                                        <TextBlock Text="Использовать" Margin="6,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+
+                            <TextBlock Grid.Row="4" 
+                                       Text="Текст сообщения:"/>
+
+                            <TextBox Grid.Row="6" 
+                                     TextChanged="TextBoxMessage_TextChanged" 
+                                     SpellCheck.IsEnabled="True" 
+                                     TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto"
+                                     Text="{Binding TextMessage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+
+                        <TextBlock Grid.Row="4"
+                                   Text="{Binding TextMessageSymbolsCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Foreground="DarkGray"/>
+                    </Grid>
+
+                    <StackPanel Grid.ColumnSpan="3"
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom">
+                        <CheckBox x:Name="checkBoxNow" 
+                              Content="Сейчас" 
+                              VerticalContentAlignment="Center" 
+                              IsChecked="True" 
+                              Checked="CheckBox_CheckedChanged" 
+                              Unchecked="CheckBox_CheckedChanged"/>
+
+                        <CheckBox x:Name="checkBoxSelectedTime" 
+                              Content="В заданное время:" 
+                              Margin="10,0,0,0" 
+                              VerticalContentAlignment="Center" 
+                              Checked="CheckBox_CheckedChanged" 
+                              Unchecked="CheckBox_CheckedChanged"/>
+
+                        <xctk:DateTimePicker x:Name="dateTimePicker" 
                                  DisplayDefaultValueOnEmptyText="True" 
                                  Format="Custom" 
                                  Kind="Local" 
                                  FormatString="yyyy-MM-dd HH:mm" 
-                                 Margin="5,5,5,10" 
-                                 IsEnabled="False" 
+                                 Margin="6,0,0,0" 
                                  AutoCloseCalendar="True"/>
-            
-            <Button x:Name="buttonMessageSend" 
-                    Margin="25,5,5,10" 
-                    ToolTip="Отправить" 
-                    Click="ButtonMessageSend_Click" 
-                    IsEnabled="False">
-                <Button.Content>
-                    <Image Source="{StaticResource SendEmail}"/>
-                </Button.Content>
-            </Button>
-        </StackPanel>
+
+                        <Button x:Name="buttonMessageSend" 
+                            Margin="30,0,0,0" 
+                            ToolTip="Отправить" 
+                                Height="20"
+                            Click="ButtonMessageSend_Click">
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="6,0,6,0">
+                                <Image Source="{StaticResource SendEmail}"/>
+                                <TextBlock Text="Отправить СМС"
+                                           Margin="6,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Массовая рассылка по расписанию">
+                <Grid>
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Список получателей рассылки:"/>
+
+                            <DataGrid Grid.Row="2" 
+                                  ItemsSource="{Binding PhoneNumberMailingItems}" 
+                                  CanUserDeleteRows="False"
+                                  CanUserAddRows="False"
+                                  CanUserReorderColumns="False"
+                                  HorizontalGridLinesBrush="#FFC8C8C8"
+                                  VerticalGridLinesBrush="LightGray"
+                                  SelectionMode="Extended"
+                                  SelectionUnit="FullRow"
+                                  SelectionChanged="DataGridPhoneNumbersMailing_SelectionChanged"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  MouseDoubleClick="DataGridPhoneNumbersMailing_MouseDoubleClick"
+                                  x:Name="DataGridPhoneNumbersMailing" >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <TextBlock Grid.Row="4"
+                                       Text="{Binding TextPhoneNumberMailingCount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                       Foreground="DarkGray"/>
+
+                            <Grid Grid.Row="6" 
+                                  HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button x:Name="ButtonPhoneNumberMailingAdd" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Добавить" 
+                                        Click="ButtonPhoneNumberAdd_Click">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Add}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="2"
+                                        x:Name="ButtonPhoneNumberMailingEdit" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Изменить" 
+                                        Click="ButtonPhoneNumberEdit_Click" 
+                                        IsEnabled="False">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Edit}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="4"
+                                        x:Name="ButtonPhoneNumberMailingRemove" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Удалить" 
+                                        Click="ButtonPhoneNumberRemove_Click" 
+                                        IsEnabled="False">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Remove}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="6" 
+                                        x:Name="ButtonPhoneNumberMailingImport" 
+                                        Height="20" 
+                                        HorizontalAlignment="Center"
+                                        ToolTip="Импорт из Excel"
+                                        Click="ButtonPhoneNumberImport_Click">
+                                    <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                                        <Image Source="{StaticResource Excel}"/>
+                                        <TextBlock Text="Импорт" Margin="6,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <Button Grid.Column="8" 
+                                        x:Name="ButtonPhoneNumberMailingClear"
+                                        Height="20"
+                                        ToolTip="Очистить сохраненные номера"
+                                        Click="ButtonPhoneNumberSavedClear_Click"
+                                        IsEnabled="False">
+                                    <Image Source="Resources/CleanData_16x.png"/>
+                                </Button>
+                            </Grid>
+                        </Grid>
+
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Дата и время рассылки:"/>
+
+                            <DataGrid Grid.Row="2"
+                                      ItemsSource="{Binding DateTimeMailingItems}"
+                                      CanUserDeleteRows="False"
+                                      CanUserAddRows="False"
+                                      CanUserReorderColumns="False"
+                                      HorizontalGridLinesBrush="#FFC8C8C8"
+                                      VerticalGridLinesBrush="LightGray"
+                                      SelectionMode="Extended"
+                                      SelectionUnit="FullRow"
+                                      SelectionChanged="DataGridDateTimeMailingSelect_SelectionChanged"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      MouseDoubleClick="DataGridDateTimeMailingSelect_MouseDoubleClick"
+                                      x:Name="DataGridDateTimeMailingSelect">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="День" Binding="{Binding SelectedDateStr,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Header="Время" Binding="{Binding SelectedTime,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <TextBlock Grid.Row="4"
+                                       Text="{Binding TextMailingSendingCount}"
+                                       Foreground="DarkGray"/>
+
+                            <Grid Grid.Row="6" 
+                                  HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button x:Name="ButtonDateTimeMailingAdd" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Добавить" 
+                                        Click="ButtonDateTimeMailingAdd_Click">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Add}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="2"
+                                        x:Name="ButtonDateTimeMailingEdit" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Изменить" 
+                                        IsEnabled="False"
+                                        Click="ButtonDateTimeMailingEdit_Click">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Edit}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="4"
+                                        x:Name="ButtonDateTimeMailingRemove" 
+                                        Width="20" 
+                                        Height="20" 
+                                        ToolTip="Удалить"  
+                                        IsEnabled="False"
+                                        Click="ButtonDateTimeMailingRemove_Click">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource Remove}"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="6"
+                                        x:Name="ButtonDateTimeMailingCopy"
+                                        Width="20"
+                                        Height="20"
+                                        HorizontalAlignment="Right"
+                                        ToolTip="Создать копию на основе выбранного"
+                                        IsEnabled="False"
+                                        Click="ButtonDateTimeMailingCopy_Click">
+                                    <Button.Content>
+                                        <Image Source="Resources/Copy_16x.png"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <Button Grid.Column="8"
+                                        x:Name="ButtonDateTimeMailingClear"
+                                        Width="20"
+                                        Height="20"
+                                        HorizontalAlignment="Right"
+                                        ToolTip="Очистить"
+                                        IsEnabled="False"
+                                        Click="ButtonDateTimeMailingClear_Click">
+                                    <Button.Content>
+                                        <Image Source="Resources/CleanData_16x.png"/>
+                                    </Button.Content>
+                                </Button>
+                            </Grid>
+                        </Grid>
+
+                        <Grid Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="100"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="6"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Количество отправляемых СМС за один раз:"/>
+                            <TextBox Grid.Row="2"
+                                     Text="{Binding MailingQuantityAtTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <TextBlock Grid.Row="4"
+                                       Text="Текст сообщения:"/>
+                            <TextBox Grid.Row="6"
+                                     Text="{Binding TextMailing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                     TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto"
+                                     HorizontalScrollBarVisibility="Auto"/>
+
+                            <TextBlock Grid.Row="8"
+                                       Text="{Binding TextMailingSymbolsCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Foreground="DarkGray"/>
+
+                            <TextBlock Grid.Row="10"
+                                       Text="{Binding MailingMessageCounter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Foreground="OrangeRed"/>
+
+                            <Grid Grid.Row="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="6"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <CheckBox Content="Добавлять в каждый запуск рассылки&#x0a;следующий номер:"
+                                          Grid.ColumnSpan="3"
+                                          Checked="CheckBoxAddAdmin_Checked"
+                                          Unchecked="CheckBoxAddAdmin_Checked"
+                                          x:Name="CheckBoxAddAdmin"/>
+                                
+                                <TextBox Grid.Row="2"
+                                         IsReadOnly="True"
+                                         x:Name="TextBoxAdminPhone"
+                                         IsEnabled="False"
+                                         Text="{Binding TextMailingAdminPhone,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                
+                                <Button Grid.Row="2"
+                                        Grid.Column="2"
+                                        Width="20"
+                                        Height="20"
+                                        ToolTip="Изменить"
+                                        x:Name="ButtonEditAdminPhone"
+                                        Click="ButtonEditAdminPhone_Click"
+                                        IsEnabled="False">
+                                    <Image Source="Resources/VSO_Edit_16x.png"/>
+                                </Button>
+                            </Grid>
+
+                            <Button Grid.Row="14"
+                                    HorizontalAlignment="Center"
+                                    Height="20"
+                                    Click="ButtonMailingMessageSend_Click">
+                                <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                                    <Image Source="{StaticResource SendEmail}" 
+                                           MaxHeight="16"/>
+                                    <TextBlock Text="Сформировать рассылку" 
+                                               Margin="6,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="История отправок">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid CanUserDeleteRows="False"
+                              CanUserAddRows="False"
+                              CanUserReorderColumns="False"
+                              HorizontalGridLinesBrush="#FFC8C8C8"
+                              VerticalGridLinesBrush="LightGray"
+                              SelectionMode="Extended"
+                              SelectionUnit="FullRow" 
+                              ItemsSource="{Binding HistoryItems}"
+                              SelectionChanged="DataGridHistory_SelectionChanged"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              MouseDoubleClick="DataGridHistoryItem_MouseDoubleClick"
+                              x:Name="DataGridHistory">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Дата отправки" Binding="{Binding DateTimeCreateString}"/>
+                            <DataGridTextColumn Header="Получатели" Binding="{Binding PhoneNumbers.Count}"/>
+                            <DataGridTextColumn Header="Текст сообщения" Binding="{Binding MessageText}"/>
+                            <DataGridCheckBoxColumn Header="Сразу" Binding="{Binding SendNow}"/>
+                            <DataGridCheckBoxColumn Header="В заданное время" Binding="{Binding SendLater}"/>
+                            <DataGridTextColumn Header="Заданное время" Binding="{Binding DateTimeSelectedString}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="buttonClearHistory" 
+                                Margin="0,10,0,0" 
+                                Click="ButtonClearHistory_Click" 
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                                <Image Source="Resources/CleanData_16x.png"/>
+                                <TextBlock Text="Очистить историю" Margin="6,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Grid.Column="1" 
+                                x:Name="buttonDetails" 
+                                Margin="0,10,0,0" 
+                                Click="ButtonDetails_Click"
+                                IsEnabled="False"
+                                HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                                <Image Source="Resources/DetailDataView_16x.png"/>
+                                <TextBlock Text="Посмотреть подробности" Margin="6,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Grid Grid.Row="1"
+              Height="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="Resources/BottomLineTemplate.png"
+                   Stretch="Fill"/>
+            <Image Grid.Column="1" Source="Resources/BottomLineContinuesClear.png"/>
+        </Grid>
     </Grid>
 </Window>

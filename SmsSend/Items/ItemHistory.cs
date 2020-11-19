@@ -1,45 +1,53 @@
-﻿using System;
+﻿using SmsSend.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SmsSend {
     public class ItemHistory {
 		public bool SendNow { get; set; }
 		public string SendNowString {
-			get {
-				return SendNow ? "Да" : "Нет";
-			}
+			get { return SendNow ? "Да" : "Нет"; }
 		}
 
 		public bool SendLater { get; set; }
 		public string SendLaterString {
-			get {
-				return SendLater ? "Да" : "Нет";
-			}
+			get { return SendLater ? "Да" : "Нет"; }
+		}
+
+		public bool SendMailing { get; set; }
+		public string SendMailinigString {
+			get { return SendMailing ? "Да" : "Нет"; }
 		}
 
 		public DateTime DateTimeCreate { get; set; }
 		public DateTime? DateTimeSelected { get; set; }
-		public String MessageText { get; set; }
+
+		public List<ItemDateTime> DateTimeMailing { get; set; }
+
+		public uint MailingQuantityAtTime { get; set; }
+		public string MessageText { get; set; }
 		public List<ItemSendResult> Results { get; set; }
 		public List<ItemPhoneNumber> PhoneNumbers { get; set; }
-
+		public uint MailingMessagesTotalCount { get; set; }
 		public string DateTimeCreateString {
 			get {
 				return DateTimeCreate.ToString();
 			}
 		}
-
 		public string DateTimeSelectedString {
 			get {
 				if (DateTimeSelected == null)
-					return "Сразу";
+					return string.Empty;
 				else
 					return ((DateTime)DateTimeSelected).ToString();
 			}
 		}
+
+		public ItemPhoneNumber PhoneNumberAdmin { get; set; }
 
 		public ItemHistory() {
 			SendNow = false;
@@ -51,8 +59,11 @@ namespace SmsSend {
 			PhoneNumbers = new List<ItemPhoneNumber>();
 		}
 
-		public ItemHistory(bool sendNow, bool sendLater, DateTime? dateTimeSelected, 
-			string messageText, List<ItemPhoneNumber> phoneNumbers) {
+		public ItemHistory(bool sendNow,
+					 bool sendLater,
+					 DateTime? dateTimeSelected,
+					 string messageText,
+					 List<ItemPhoneNumber> phoneNumbers) {
 			SendNow = sendNow;
 			SendLater = sendLater;
 			DateTimeCreate = DateTime.Now;
@@ -61,5 +72,20 @@ namespace SmsSend {
 			Results = new List<ItemSendResult>();
 			PhoneNumbers = phoneNumbers;
 		}
-    }
+
+		public ItemHistory(string messageText,
+					 List<ItemPhoneNumber> phoneNumbers,
+					 List<ItemDateTime> dateTimeMailing,
+					 uint mailingQuantityAtTime,
+					 uint mailingMessagesTotalCount) {
+			SendMailing = true;
+			DateTimeCreate = DateTime.Now;
+			MessageText = messageText;
+			Results = new List<ItemSendResult>();
+			PhoneNumbers = phoneNumbers;
+			DateTimeMailing = dateTimeMailing;
+			MailingQuantityAtTime = mailingQuantityAtTime;
+			MailingMessagesTotalCount = mailingMessagesTotalCount;
+		}
+	}
 }

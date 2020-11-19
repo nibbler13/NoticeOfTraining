@@ -5,37 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmsSend"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:osb="clr-namespace:Xceed.Wpf.Toolkit.Obselete;assembly=WPFToolkit.Extended"
         mc:Ignorable="d"
         Title="Редактирование контакта" 
         Background="#FFF0F0F0" 
         SizeToContent="Height" 
         WindowStartupLocation="CenterOwner" 
         ResizeMode="NoResize" 
+        WindowStyle="ToolWindow"
         Width="300">
-    <StackPanel>
+    <StackPanel Margin="10">
         <Label Content="Имя:" 
-               HorizontalAlignment="Center" 
-               Margin="10,10,10,0"/>
+               HorizontalAlignment="Center"/>
         <TextBox x:Name="textBoxName" 
-                 Text="{Binding PhoneNumberItem.Name}" 
-                 Height="23" Margin="10,0,10,5" 
+                 Height="23"
                  KeyDown="TextBox_KeyDown"/>
+        
         <Label Content="Номер телефона:" 
                HorizontalAlignment="Center" 
-               Margin="10,10,10,0" />
-        <xctk:MaskedTextBox Text="{Binding PhoneNumberItem.PhoneNumber}" 
+               Margin="0,10,0,0" />
+        <xctk:MaskedTextBox Text="" 
                             Mask="+7 (000) 000-00-00" 
                             x:Name="textBoxPhoneNumber" 
                             HorizontalAlignment="Center" 
-                            Margin="10,0,10,10" 
                             HorizontalContentAlignment="Center" 
                             Width="120" 
                             KeyDown="TextBox_KeyDown"/>
+
         <Button x:Name="buttonSave" 
-                Content="Сохранить" 
-                Margin="10" 
+                Margin="0,20,0,0" 
                 Click="ButtonSave_Click" 
-                IsEnabled="False"/>
+                IsEnabled="False"
+                HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                <Image Source="Resources/Save_16x.png"/>
+                <TextBlock Text="Сохранить" Margin="6,0,0,0"/>
+            </StackPanel>
+        </Button>
     </StackPanel>
 </Window>

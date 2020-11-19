@@ -5,26 +5,104 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmsSend"
         mc:Ignorable="d"
-        Title="Импорт контактов из Excel" Width="300" Height="400" WindowStartupLocation="CenterOwner" Background="#FFF0F0F0">
-    <Grid>
+        Title="Импорт контактов из Excel" 
+        Width="300" 
+        Height="400" 
+        WindowStartupLocation="CenterOwner" 
+        Background="#FFF0F0F0"
+        WindowStyle="ToolWindow"
+        MinWidth="300"
+        MinHeight="350">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Margin="10,10,10,5" x:Name="stackPanel">
-            <TextBlock Text="Выбранный файл:" Margin="0"/>
-            <TextBox IsReadOnly="True" x:Name="textBoxSelectedFile"/>
-            <Button Content="Выбрать" Margin="0,10,0,5" Width="85" Click="ButtonSelectFile_Click"/>
-            <TextBlock Text="Имя листа:" Margin="0,5,0,0"/>
-            <TextBox Text="Лист1" Margin="0,0,0,5" x:Name="textBoxSheetName" IsEnabled="False" TextChanged="TextBox_TextChanged"/>
-            <TextBlock Text="Имя столбца, содержащей имя:" Margin="0,5,0,0"/>
-            <TextBox Text="A" Margin="0,0,0,5" x:Name="textBoxColumnName" IsEnabled="False" TextChanged="TextBox_TextChanged"/>
-            <TextBlock Text="Имя столбца, содержащей номер телефона:" Margin="0,5,0,0"/>
-            <TextBox Text="B" Margin="0,0,0,5" x:Name="textBoxColumnPhoneNumber" IsEnabled="False" TextChanged="TextBox_TextChanged"/>
-        </StackPanel>
-        <TextBox Grid.Row="0" Visibility="Hidden" x:Name="textBox" Margin="10,10,10,5" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
-        <ProgressBar Grid.Row="1" Height="15" Margin="10,5" x:Name="progressBar"/>
-        <Button Grid.Row="2" Content="Импорт" Width="85" Margin="0,5,0,10" x:Name="buttonImport" IsEnabled="False" Click="ButtonImport_Click"/>
+        
+        <Grid x:Name="GridSelect">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Text="Выбранный файл:"/>
+            
+            <TextBox Grid.Row="2"
+                     IsReadOnly="True" 
+                     x:Name="textBoxSelectedFile"/>
+
+            <Button Grid.Row="4"
+                    Click="ButtonSelectFile_Click"
+                    HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                    <Image Source="Resources/Select_16x.png"/>
+                    <TextBlock Text="Выбрать" Margin="6,0,0,0"/>
+                </StackPanel>
+            </Button>
+            
+            <TextBlock Grid.Row="6"
+                       Text="Имя листа:"/>
+            
+            <ComboBox Grid.Row="8"
+                      Text="Лист1" 
+                      x:Name="ComboBoxSheetName" 
+                      IsEnabled="False"/>
+            
+            <TextBlock Grid.Row="10"
+                       Text="Имя столбца, содержащего имя:"/>
+            
+            <TextBox Grid.Row="12"
+                     Text="A" 
+                     x:Name="textBoxColumnName" 
+                     IsEnabled="False" 
+                     TextChanged="TextBox_TextChanged"/>
+            
+            <TextBlock Grid.Row="14" 
+                       Text="Имя столбца, содержащего номер телефона:"/>
+            
+            <TextBox Grid.Row="16" 
+                     Text="B"
+                     x:Name="textBoxColumnPhoneNumber" 
+                     IsEnabled="False" 
+                     TextChanged="TextBox_TextChanged"/>
+        </Grid>
+        
+        <TextBox Visibility="Hidden"
+                 x:Name="textBoxProgressResult"
+                 IsReadOnly="True" 
+                 TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto"/>
+        
+        <ProgressBar Grid.Row="1"
+                     Height="15" 
+                     x:Name="progressBar"/>
+
+        <Button Grid.Row="2" 
+                HorizontalAlignment="Center"
+                Margin="0,10,0,0" 
+                x:Name="buttonImport" 
+                IsEnabled="False"
+                Click="ButtonImport_Click">
+            <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                <Image Source="Resources/excel.ico"/>
+                <TextBlock Text="Импорт" Margin="6,0,0,0"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </Window>

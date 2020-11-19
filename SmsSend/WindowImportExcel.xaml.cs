@@ -34,15 +34,33 @@ namespace SmsSend {
 			openFileDialog.RestoreDirectory = true;
 
 			if (openFileDialog.ShowDialog() == true) {
-				textBoxSelectedFile.Text = openFileDialog.FileName;
-				List<TextBox> textBoxes = new List<TextBox>() {
-					textBoxSheetName,
+				string fileName = openFileDialog.FileName;
+				textBoxSelectedFile.Text = fileName;
+
+				try {
+					List<string> sheetNames = ExcelReader.ReadSheetNames(fileName);
+					ComboBoxSheetName.Items.Clear();
+					foreach (string sheetName in sheetNames)
+						ComboBoxSheetName.Items.Add(sheetName);
+
+					ComboBoxSheetName.SelectedIndex = 0;
+				} catch (Exception exc) {
+					MessageBox.Show(
+						this,
+						exc.Message,
+						"Ошибка считывания файла Excel",
+						MessageBoxButton.OK,
+						MessageBoxImage.Error);
+				}
+
+				List<UIElement> uiElements = new List<UIElement>() {
+					ComboBoxSheetName,
 					textBoxColumnName,
 					textBoxColumnPhoneNumber
 				};
 
-				foreach (TextBox textBox in textBoxes)
-					textBox.IsEnabled = true;
+				foreach (UIElement uiElement in uiElements)
+					uiElement.IsEnabled = true;
 
 				TextBox_TextChanged(null, null);
 			}
@@ -53,23 +71,25 @@ namespace SmsSend {
 				return;
 
 			buttonImport.IsEnabled =
-				textBoxSheetName.Text.Length > 0 &&
+				ComboBoxSheetName.SelectedItem != null &&
 				textBoxColumnName.Text.Length > 0 &&
 				textBoxColumnPhoneNumber.Text.Length > 0;
 		}
 
 		private async void ButtonImport_Click(object sender, RoutedEventArgs e) {
 			buttonImport.IsEnabled = false;
-			stackPanel.Visibility = Visibility.Hidden;
-			textBox.Visibility = Visibility.Visible;
+			GridSelect.Visibility = Visibility.Hidden;
+			textBoxProgressResult.Visibility = Visibility.Visible;
 			Cursor = Cursors.Wait;
 
 			string fileName = textBoxSelectedFile.Text;
-			string sheetName = textBoxSheetName.Text;
+			string sheetName = ComboBoxSheetName.SelectedItem as string;
 			string columnName = textBoxColumnName.Text;
 			string columnPhoneNumber = textBoxColumnPhoneNumber.Text;
 
 			List<ItemPhoneNumber> results = new List<ItemPhoneNumber>();
+
+			UpdateProgress(0, "Считывание файла: " + fileName + ", лист: " + sheetName);
 
 			await Task.Run(new Action(() => {
 				results = ExcelReader.ReadPhoneNumbers(
@@ -83,13 +103,21 @@ namespace SmsSend {
 			Cursor = Cursors.Arrow;
 
 			if (results.Count == 0) {
-				MessageBox.Show("Не удалось считать ни одного номера телефона", "", 
-					MessageBoxButton.OK, MessageBoxImage.Warning);
+				MessageBox.Show(
+					this,
+					"Не удалось считать ни одного номера телефона",
+					"", 
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
 				return;
 			}
 
-			MessageBox.Show("Считано номеров телефонов: " + results.Count, "Завершено", 
-				MessageBoxButton.OK, MessageBoxImage.Information);
+			MessageBox.Show(
+				this,
+				"Считано номеров телефонов: " + results.Count,
+				"Завершено", 
+				MessageBoxButton.OK,
+				MessageBoxImage.Information);
 
 			PhoneNumbers = results;
 			DialogResult = true;
@@ -99,7 +127,7 @@ namespace SmsSend {
 			Application.Current.Dispatcher.Invoke(new Action(() => {
 				progressBar.Value = (int)progress;
 				if (!string.IsNullOrEmpty(text))
-					textBox.Text = text + Environment.NewLine + textBox.Text;
+					textBoxProgressResult.Text = text + Environment.NewLine + textBoxProgressResult.Text;
 			}));
 		}
 	}

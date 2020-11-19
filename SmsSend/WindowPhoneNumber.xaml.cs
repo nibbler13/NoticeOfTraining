@@ -18,37 +18,24 @@ namespace SmsSend {
 	/// </summary>
 	public partial class WindowPhoneNumber : Window {
 		public ItemPhoneNumber PhoneNumberItem { get; set; }
-		private string originalName;
-		private string originalPhoneNumber;
 
-		public WindowPhoneNumber() {
+		public WindowPhoneNumber(ItemPhoneNumber itemPhoneNumber) {
 			InitializeComponent();
-			PhoneNumberItem = new ItemPhoneNumber();
-			textBoxName.DataContext = this;
-			textBoxPhoneNumber.DataContext = this;
+			PhoneNumberItem = itemPhoneNumber;
+			textBoxName.Text = itemPhoneNumber.Name;
+			textBoxPhoneNumber.Text = itemPhoneNumber.PhoneNumber;
 			textBoxPhoneNumber.TextChanged += TextBoxPhoneNumber_TextChanged;
 			textBoxName.TextChanged += TextBoxPhoneNumber_TextChanged;
-			Closed += WindowPhoneNumber_Closed;
 			textBoxName.Focus();
-		}
-
-		private void WindowPhoneNumber_Closed(object sender, EventArgs e) {
-			if (DialogResult != true) {
-				PhoneNumberItem.Name = originalName;
-				PhoneNumberItem.PhoneNumber = originalPhoneNumber;
-			}
-		}
-
-		public WindowPhoneNumber(ItemPhoneNumber phoneNumberItem) : this() {
-			PhoneNumberItem = phoneNumberItem;
-			originalName = phoneNumberItem.Name;
-			originalPhoneNumber = phoneNumberItem.PhoneNumber;
 		}
 
 		private void ButtonSave_Click(object sender, RoutedEventArgs e) {
 			if (textBoxName.Text.Length == 0 ||
 				!textBoxPhoneNumber.IsMaskCompleted)
 				return;
+
+			PhoneNumberItem.Name = textBoxName.Text;
+			PhoneNumberItem.PhoneNumber = textBoxPhoneNumber.Text;
 
 			DialogResult = true;
 			Close();

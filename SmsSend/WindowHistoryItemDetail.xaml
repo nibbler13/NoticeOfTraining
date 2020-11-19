@@ -5,47 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmsSend"
         mc:Ignorable="d"
-        Title="Информация об отправке сообщения от " Height="400" Width="1000" Background="#FFF0F0F0" WindowStartupLocation="CenterOwner">
-    <Window.Resources>
-        <DataTemplate x:Key="ArrowUp">
-            <DockPanel>
-                <TextBlock HorizontalAlignment="Center"
-                           Text="{Binding}" />
-                <Path VerticalAlignment="Center"
-                      Fill="Black"
-                      Data="M 5,5 15,5 10,0 5,5" />
-            </DockPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="ArrowDown">
-            <DockPanel>
-                <TextBlock HorizontalAlignment="Center"
-                           Text="{Binding}" />
-                <Path VerticalAlignment="Center"
-                      Fill="Black"
-                      Data="M 5,0 10,5 15,0 5,0" />
-            </DockPanel>
-        </DataTemplate>
-    </Window.Resources>
-    <Grid>
+        Title="Информация об отправке сообщения от "
+        Height="400" 
+        Width="600" 
+        MinHeight="300"
+        MinWidth="400"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" 
-                  Margin="10,10,10,5"
-                  GridViewColumnHeader.Click="ListView_Click"
+        <DataGrid Grid.Row="0" 
                   ItemsSource="{Binding HistoryDetailItems}"
-                  x:Name="listViewHistoryDetail">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Имя получателя" DisplayMemberBinding="{Binding Name}" Width="200"/>
-                    <GridViewColumn Header="Номер телефона" DisplayMemberBinding="{Binding PhoneNumber}"/>
-                    <GridViewColumn Header="Заданное время" DisplayMemberBinding="{Binding DateSelected}"/>
-                    <GridViewColumn Header="Статус доставки" DisplayMemberBinding="{Binding DeliveryState}" Width="350"/>
-                    <GridViewColumn Header="Дата доставки" DisplayMemberBinding="{Binding DeliveryDateTimeString}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Button Grid.Row="1" Content="Закрыть" Width="85" Margin="10,5,10,10" Click="Button_Click"/>
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserDeleteRows="False"
+                  CanUserAddRows="False"
+                  CanUserReorderColumns="False"
+                  HorizontalGridLinesBrush="#FFC8C8C8"
+                  VerticalGridLinesBrush="LightGray"
+                  SelectionMode="Extended"
+                  SelectionUnit="FullRow" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя получателя" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
+                <DataGridTextColumn Header="Заданное время" Binding="{Binding DateSelected}"/>
+                <DataGridTextColumn Header="Статус доставки" Binding="{Binding DeliveryState}"/>
+                <DataGridTextColumn Header="Дата доставки" Binding="{Binding DeliveryDateTimeString}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="1" 
+                Margin="0,10,0,0" 
+                HorizontalAlignment="Center"
+                Click="Button_Click">
+            <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                <Image Source="Resources/Close_16x.png"/>
+                <TextBlock Text="Закрыть" Margin="6,0,0,0"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </Window>

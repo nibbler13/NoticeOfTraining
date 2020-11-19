@@ -11,6 +11,7 @@ namespace SmsSend {
 		public string DateSelected { get; private set; }
 		private string MessageId { get; set; }
 		public string DeliveryState { get; private set; }
+
 		private ItemDeliveryState itemDeliveryState;
 		public string DeliveryDateTimeString { get; private set; }
 
@@ -19,14 +20,21 @@ namespace SmsSend {
 			PhoneNumber = phoneNumber;
 			MessageId = messageId;
 			DateSelected = dateSelected != null ? ((DateTime)dateSelected).ToString() : "Сразу";
-			itemDeliveryState = new ItemDeliveryState();
-			itemDeliveryState = SmsGate.GetDeliveryStateContent(MessageId);
-			DeliveryState = itemDeliveryState.IsSuccessStatusCode ?
-				itemDeliveryState.DeliveryState :
-				"Не удалось получить статус, " + itemDeliveryState.Content;
-			DeliveryDateTimeString = itemDeliveryState.DateTimeDelivery == null ?
-				string.Empty :
-				((DateTime)itemDeliveryState.DateTimeDelivery).ToString();
+
+			if (string.IsNullOrEmpty(messageId)) {
+				DeliveryState = "Неизвестно";
+				DeliveryDateTimeString = string.Empty;
+			} else {
+				itemDeliveryState = SmsGate.GetDeliveryStateContent(MessageId);
+
+				DeliveryState = itemDeliveryState.IsSuccessStatusCode ?
+					itemDeliveryState.DeliveryState :
+					"Не удалось получить статус, " + itemDeliveryState.Content;
+
+				DeliveryDateTimeString = itemDeliveryState.DateTimeDelivery == null ?
+					string.Empty :
+					((DateTime)itemDeliveryState.DateTimeDelivery).ToString();
+			}
 		}
     }
 }

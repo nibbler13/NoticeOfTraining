@@ -77,12 +77,16 @@ namespace SmsSend {
 						fbDataAdapter.Fill(dataTable);
 				}
 			} catch (Exception e) {
-				MessageBox.Show(
-					Application.Current.MainWindow,
-					e.Message + Environment.NewLine + e.StackTrace,
-					"Ошибка выполнения запроса к БД",
-					MessageBoxButton.OK,
-					MessageBoxImage.Error);
+				if (Application.Current.MainWindow != null)
+					MessageBox.Show(
+						Application.Current.MainWindow,
+						e.Message + Environment.NewLine + e.StackTrace,
+						"Ошибка выполнения запроса к БД",
+						MessageBoxButton.OK,
+						MessageBoxImage.Error);
+				else
+					Logging.ToLog(e.Message + Environment.NewLine + e.StackTrace);
+
 				connection.Close();
 			}
 
@@ -105,12 +109,16 @@ namespace SmsSend {
 
 				updated = update.ExecuteNonQuery() > 0 ? true : false;
 			} catch (Exception e) {
+				if (Application.Current.MainWindow != null)
 				MessageBox.Show(
-					Application.Current.MainWindow,
 					e.Message + Environment.NewLine + e.StackTrace,
 					"Ошибка выполнения запроса к БД",
 					MessageBoxButton.OK,
 					MessageBoxImage.Error);
+				else {
+					Logging.ToLog(e.Message + Environment.NewLine + e.StackTrace);
+				}
+
 				connection.Close();
 			}
 

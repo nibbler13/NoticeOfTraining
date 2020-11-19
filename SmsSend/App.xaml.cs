@@ -11,5 +11,16 @@ namespace SmsSend {
 	/// Логика взаимодействия для App.xaml
 	/// </summary>
 	public partial class App : Application {
+		private void Application_Startup(object sender, StartupEventArgs e) {
+			if (e.Args.Length == 0) {
+				WindowMain windowMain = new WindowMain();
+				windowMain.Show();
+			} else if (e.Args.Length == 1) {
+				if (e.Args[0].Equals("--StartMailing")) {
+					MessageSendingSystem.RunMailingAtThisTime();
+					Application.Current.Shutdown();
+				}
+			}
+		}
 	}
 }

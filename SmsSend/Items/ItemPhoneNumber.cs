@@ -13,34 +13,32 @@ namespace SmsSend {
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		private string _name = string.Empty;
+		private string name = string.Empty;
 		public string Name {
-			get {
-				return _name;
-			}
+			get { return name; }
 			set {
-				if (value != _name) {
-					_name = value;
+				if (value != name) {
+					name = value;
 					NotifyPropertyChanged();
 				}
 			}
 		}
 
-		private string _phoneNumber = string.Empty;
+		private string phoneNumber = string.Empty;
 		public string PhoneNumber {
-			get {
-				return _phoneNumber;
-			}
+			get { return phoneNumber; }
 			set {
-				if (value != _phoneNumber) {
-					_phoneNumber = value;
+				if (value != phoneNumber) {
+					phoneNumber = value;
 					NotifyPropertyChanged();
 				}
 			}
 		}
 
 		public string GetClearedNumber() {
-			return new String(_phoneNumber.Where(Char.IsDigit).ToArray());
+			return new string(phoneNumber.Where(char.IsDigit).ToArray());
 		}
+
+		public string MailingId { get; set; }
 	}
 }
